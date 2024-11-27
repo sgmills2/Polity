@@ -8,4 +8,4 @@ def fetch_members():
     if response.status_code == 200:
         return response.json()  # Returns raw JSON data
     else:
-        raise Exception(f"Failed to fetch members: {response.status_code}")
+        raise requests.HTTPError(f"Error {response.status_code}: {response.text}")
