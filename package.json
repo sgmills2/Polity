@@ -1,1 +1,6 @@
-{}
+{
+    "name": "polity",
+    "private": true,
+    "workspaces": ["frontend", "backend"]
+  }
+  
