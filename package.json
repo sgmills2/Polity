@@ -1,6 +1,15 @@
 {
     "name": "polity",
     "private": true,
-    "workspaces": ["frontend", "backend"]
-  }
-  
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "scripts": {
+        "start": "concurrently \"npm start --prefix frontend\" \"npm start --prefix backend\"",
+        "test": "concurrently \"npm test --prefix frontend\" \"npm test --prefix backend\""
+    },
+    "devDependencies": {
+        "concurrently": "^9.1.0"
+    }
+}
