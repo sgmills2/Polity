@@ -6,7 +6,10 @@ const CongressMembers = () => {
   const { members, loading, error } = useFetchMembers();
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error loading members: {error.message}</p>;
+  if (error) {
+    console.error("Error loading members:", error);
+    return <p>Error loading members: {error.message}</p>;
+  }
 
   return (
     <div>
