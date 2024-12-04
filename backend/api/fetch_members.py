@@ -9,3 +9,10 @@ def fetch_members():
         return response.json()  # Returns raw JSON data
     else:
         raise requests.HTTPError(f"Error {response.status_code}: {response.text}")
+
+if __name__ == "__main__":
+    try:
+        members = fetch_members()
+        print(members)
+    except requests.HTTPError as e:
+        print(e)
