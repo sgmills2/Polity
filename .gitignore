@@ -28,3 +28,17 @@ yarn-error.log*
 # Python
 *.pyc
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+polityenv/
+
+# Database
+*.db
+*.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.*.local
