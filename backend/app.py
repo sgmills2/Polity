@@ -1,31 +1,49 @@
 import sqlite3
 import uvicorn
-
-from fastapi import FastAPI, APIRouter
+import os
+from pathlib import Path
+from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
+from contextlib import contextmanager
 from routes.congress import congress
 
-app = FastAPI()
+# Get the absolute path to the database
+BASE_DIR = Path(__file__).resolve().parent.parent
+DB_PATH = BASE_DIR / 'database' / 'polity.db'
 
-# Database connection
+app = FastAPI(title="Polity API")
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Database connection management
+@contextmanager
 def get_db_connection():
-    conn = sqlite3.connect('../database/polity.db')
+    conn = sqlite3.connect(str(DB_PATH))
     conn.row_factory = sqlite3.Row
-    return conn
+    try:
+        yield conn
+    finally:
+        conn.close()
 
 # Register Congress API route
 congress_router = APIRouter()
 app.include_router(congress_router, prefix="/congress")
 app.include_router(congress)
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000, reload=True)
 
 # Models
 class Politician(BaseModel):
     name: str
-    voting_records: list
-    lawsuits: list
+    voting_records: list = []
+    lawsuits: list = []
 
 class Member(BaseModel):
     id: int
@@ -33,21 +51,36 @@ class Member(BaseModel):
     state: str
     chamber: str
 
-@app.get("/politicians/{name}")
-def get_politician(name: str):
-    conn = get_db_connection()
-    politician = conn.execute('SELECT * FROM politicians WHERE name = ?', (name,)).fetchone()
-    if politician is None:
-        return {"error": "Politician not found"}
-    return {"name": politician["name"], "voting_records": [], "lawsuits": []}
+# API Endpoints
+@app.get("/politicians/{name}", response_model=Politician)
+async def get_politician(name: str):
+    with get_db_connection() as conn:
+        politician = conn.execute(
+            'SELECT * FROM politicians WHERE name = ?', 
+            (name,)
+        ).fetchone()
+        
+        if politician is None:
+            raise HTTPException(status_code=404, detail="Politician not found")
+        
+        return {
+            "name": politician["name"],
+            "voting_records": [],
+            "lawsuits": []
+        }
 
 @app.get("/members/{chamber}/{state}", response_model=List[Member])
 async def get_members_by_state(chamber: str, state: str):
-    conn = get_db_connection()
-    try:
+    with get_db_connection() as conn:
         members = conn.execute(
-            'SELECT id, name, state, chamber FROM politicians WHERE chamber = ? AND state = ?',
-            (chamber.lower(), state.upper())
+            '''
+            SELECT id, name, state, chamber 
+            FROM politicians 
+            WHERE LOWER(chamber) = LOWER(?) 
+            AND UPPER(state) = UPPER(?)
+            ORDER BY name
+            ''',
+            (chamber, state)
         ).fetchall()
         
         return [
@@ -59,5 +92,20 @@ async def get_members_by_state(chamber: str, state: str):
             }
             for member in members
         ]
-    finally:
-        conn.close()
+
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy"}
+
+if __name__ == "__main__":
+    # Make sure the database directory exists
+    os.makedirs(BASE_DIR / 'database', exist_ok=True)
+    
+    uvicorn.run(
+        "app:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=True,
+        log_level="info"
+    )

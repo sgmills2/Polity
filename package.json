@@ -6,10 +6,12 @@
         "backend"
     ],
     "scripts": {
-        "start": "concurrently \"npm start --prefix frontend\" \"npm start --prefix backend\"",
-        "test": "concurrently \"npm test --prefix frontend\" \"npm test --prefix backend\""
+        "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+        "start-frontend": "cd frontend && npm start",
+        "start-backend": "cd backend && python app.py",
+        "install-all": "npm install && cd frontend && npm install"
     },
     "devDependencies": {
-        "concurrently": "^9.1.0"
+        "concurrently": "^8.2.0"
     }
 }
