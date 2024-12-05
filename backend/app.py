@@ -1,13 +1,18 @@
-import sqlite3
-import uvicorn
 import os
+import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
-from fastapi import FastAPI, APIRouter, HTTPException
+from typing import List
+
+import uvicorn
+from dotenv import load_dotenv
+from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List
-from contextlib import contextmanager
 from routes.congress import congress
+
+# Load environment variables
+load_dotenv()
 
 # Get the absolute path to the database
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -16,9 +21,14 @@ DB_PATH = BASE_DIR / 'database' / 'polity.db'
 app = FastAPI(title="Polity API")
 
 # Configure CORS
+origins = [
+    "http://localhost:3000",  # React dev server
+    "http://127.0.0.1:3000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React frontend
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

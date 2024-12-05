@@ -18,6 +18,9 @@ def seed_database():
     politicians = [
         (1, 'Dianne Feinstein', 'CA', 'senate'),
         (2, 'Alex Padilla', 'CA', 'senate'),
+        (3, 'Bernie Sanders', 'VT', 'senate'),
+        (4, 'Elizabeth Warren', 'MA', 'senate'),
+        (5, 'Alexandria Ocasio-Cortez', 'NY', 'house'),
         # Add more politicians as needed
     ]
 

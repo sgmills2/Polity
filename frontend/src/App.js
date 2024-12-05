@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import CongressMembers from "./components/CongressMembers/CongressMembers";
 import SliderBar from './components/SliderBar';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const App = () => {
     const [politician, setPolitician] = useState(null);
-    const [score, setScore] = useState(70);
+    const [score, setScore] = useState('');
     const [chamber, setChamber] = useState('');
     const [state, setState] = useState('');
     const [members, setMembers] = useState([]);
@@ -13,18 +15,43 @@ const App = () => {
     // Get list of members when chamber and state are selected
     useEffect(() => {
         if (chamber && state) {
-            fetch(`http://localhost:8000/members/${chamber}/${state}`)
-                .then(response => response.json())
+            fetch(`${API_URL}/members/${chamber}/${state}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => setMembers(data))
-                .catch(error => console.error("Error fetching members:", error));
+                .catch(error => {
+                    console.error("Error fetching members:", error);
+                    setMembers([]);
+                });
         }
     }, [chamber, state]);
 
     // Get politician details when a member is selected
     useEffect(() => {
         if (selectedMember) {
-            fetch(`http://localhost:8000/politicians/${encodeURIComponent(selectedMember)}`)
-                .then(response => response.json())
+            fetch(`${API_URL}/politicians/${encodeURIComponent(selectedMember)}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                },
+                credentials: 'include'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => setPolitician(data))
                 .catch(error => {
                     console.error("Error fetching politician:", error);
