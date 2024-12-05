@@ -3,6 +3,7 @@ import uvicorn
 
 from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
+from typing import List
 from routes.congress import congress
 
 app = FastAPI()
@@ -26,6 +27,12 @@ class Politician(BaseModel):
     voting_records: list
     lawsuits: list
 
+class Member(BaseModel):
+    id: int
+    name: str
+    state: str
+    chamber: str
+
 @app.get("/politicians/{name}")
 def get_politician(name: str):
     conn = get_db_connection()
@@ -33,3 +40,24 @@ def get_politician(name: str):
     if politician is None:
         return {"error": "Politician not found"}
     return {"name": politician["name"], "voting_records": [], "lawsuits": []}
+
+@app.get("/members/{chamber}/{state}", response_model=List[Member])
+async def get_members_by_state(chamber: str, state: str):
+    conn = get_db_connection()
+    try:
+        members = conn.execute(
+            'SELECT id, name, state, chamber FROM politicians WHERE chamber = ? AND state = ?',
+            (chamber.lower(), state.upper())
+        ).fetchall()
+        
+        return [
+            {
+                "id": member["id"],
+                "name": member["name"],
+                "state": member["state"],
+                "chamber": member["chamber"]
+            }
+            for member in members
+        ]
+    finally:
+        conn.close()
