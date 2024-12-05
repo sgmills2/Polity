@@ -19,8 +19,7 @@ const App = () => {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                },
-                credentials: 'include'
+                }
             })
                 .then(response => {
                     if (!response.ok) {
@@ -43,8 +42,7 @@ const App = () => {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                },
-                credentials: 'include'
+                }
             })
                 .then(response => {
                     if (!response.ok) {

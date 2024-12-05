@@ -1,11 +1,13 @@
 from fastapi import APIRouter
-from backend.api.fetch_members import fetch_members
-from backend.api.process_members import process_data
+import sys
+from pathlib import Path
 
-congress = APIRouter()
+# Add project root to Python path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+from database.seed_data import fetch_members
 
-@congress.get("/api/congress-members")
-def get_congress_members():
-    raw_data = fetch_members()
-    processed_data = process_data(raw_data)
-    return processed_data
+router = APIRouter()
+
+@router.get("/members")
+async def get_members():
+    return fetch_members()

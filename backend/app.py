@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from routes.congress import congress
+from routes.congress import router as congress_router
 
 # Load environment variables
 load_dotenv()
@@ -20,16 +20,11 @@ DB_PATH = BASE_DIR / 'database' / 'polity.db'
 
 app = FastAPI(title="Polity API")
 
-# Configure CORS
-origins = [
-    "http://localhost:3000",  # React dev server
-    "http://127.0.0.1:3000",
-]
-
+# Configure CORS - make more permissive for development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
+    allow_origins=["*"],  # More permissive for development
+    allow_credentials=False,  # Changed to False
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -45,9 +40,7 @@ def get_db_connection():
         conn.close()
 
 # Register Congress API route
-congress_router = APIRouter()
 app.include_router(congress_router, prefix="/congress")
-app.include_router(congress)
 
 # Models
 class Politician(BaseModel):
@@ -81,32 +74,46 @@ async def get_politician(name: str):
 
 @app.get("/members/{chamber}/{state}", response_model=List[Member])
 async def get_members_by_state(chamber: str, state: str):
+    print(f"Received request for chamber: {chamber}, state: {state}")  # Debug log
     with get_db_connection() as conn:
-        members = conn.execute(
-            '''
-            SELECT id, name, state, chamber 
-            FROM politicians 
-            WHERE LOWER(chamber) = LOWER(?) 
-            AND UPPER(state) = UPPER(?)
-            ORDER BY name
-            ''',
-            (chamber, state)
-        ).fetchall()
-        
-        return [
-            {
-                "id": member["id"],
-                "name": member["name"],
-                "state": member["state"],
-                "chamber": member["chamber"]
-            }
-            for member in members
-        ]
+        try:
+            members = conn.execute(
+                '''
+                SELECT id, name, state, chamber 
+                FROM politicians 
+                WHERE LOWER(chamber) = LOWER(?) 
+                AND UPPER(state) = UPPER(?)
+                ORDER BY name
+                ''',
+                (chamber, state)
+            ).fetchall()
+            print(f"Found {len(members)} members")  # Debug log
+            return [
+                {
+                    "id": member["id"],
+                    "name": member["name"],
+                    "state": member["state"],
+                    "chamber": member["chamber"]
+                }
+                for member in members
+            ]
+        except Exception as e:
+            print(f"Database error: {str(e)}")  # Debug log
+            raise HTTPException(status_code=500, detail=str(e))
 
 # Health check endpoint
 @app.get("/health")
 async def health_check():
     return {"status": "healthy"}
+
+@app.get("/test-db")
+async def test_db():
+    with get_db_connection() as conn:
+        try:
+            result = conn.execute('SELECT COUNT(*) as count FROM politicians').fetchone()
+            return {"message": "Database connected", "politician_count": result['count']}
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
 if __name__ == "__main__":
     # Make sure the database directory exists
