@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from typing import List
 
@@ -8,8 +9,11 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from .api.fetch_members import fetch_members
-from .api.process_members import process_data
+# Add project root to Python path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from backend.api.fetch_members import fetch_members
+from backend.api.process_members import process_data
 
 # Load environment variables
 load_dotenv()
