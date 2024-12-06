@@ -1,19 +1,20 @@
+"""FastAPI application for the Polity Congress Member Rating System."""
+
 import os
 import sys
 from pathlib import Path
 from typing import List
-
-import uvicorn
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 
 # Add project root to Python path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from backend.api.fetch_members import fetch_members
 from backend.api.process_members import process_data
+import uvicorn
+from dotenv import load_dotenv
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
 # Load environment variables
 load_dotenv()

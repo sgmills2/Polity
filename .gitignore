@@ -28,9 +28,8 @@ yarn-error.log*
 # Python
 *.pyc
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyo
+*.pyd
 .Python
 polityenv/
 polityenv/**/*
