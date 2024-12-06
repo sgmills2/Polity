@@ -33,6 +33,8 @@ __pycache__/
 *.so
 .Python
 polityenv/
+polityenv/**/*
+venv/
 
 # Database
 *.db
