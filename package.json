@@ -11,8 +11,9 @@
     "dev:frontend": "yarn workspace @polity/frontend dev",
     "build": "yarn workspaces foreach -Aptv run build",
     "lint": "yarn workspaces foreach -Aptv run lint",
-    "test": "yarn workspaces foreach -Aptv run test",
-    "sync": "yarn workspace @polity/backend sync"
+    "test": "node --test tests/*.test.mjs packages/frontend/src/components/evidence/*.test.mjs",
+    "sync": "yarn workspace @polity/backend sync",
+    "build:frontend": "yarn workspace @polity/shared build && yarn workspace @polity/frontend build"
   },
   "packageManager": "yarn@4.1.0",
   "devDependencies": {

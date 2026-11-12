@@ -1,0 +1,19 @@
+name: Frontend evidence checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: node .yarn/releases/yarn-4.1.0.cjs install --immutable
+      - run: node .yarn/releases/yarn-4.1.0.cjs workspace @polity/shared build
+      - run: node .yarn/releases/yarn-4.1.0.cjs workspace @polity/frontend build
+      - run: node .yarn/releases/yarn-4.1.0.cjs test
