@@ -1,6 +1,8 @@
+import { DEMO_MODE } from "../../data/mode";
 import { ReactNode } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
+  Alert,
   Box,
   Sheet,
   List,
@@ -94,6 +96,12 @@ export default function Layout({ children }: { children: ReactNode }) {
         tabIndex={-1}
         sx={{ minWidth: 0, flex: 1, p: { xs: 2, md: 4 }, maxWidth: 1400 }}
       >
+        {DEMO_MODE && (
+          <Alert color="warning" sx={{ mb: 3 }}>
+            DEMO ONLY · All people shown are fictional. No live API, database,
+            account, address collection or messages are connected.
+          </Alert>
+        )}
         {children}
       </Box>
     </Box>

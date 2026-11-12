@@ -43,3 +43,11 @@ node .yarn/releases/yarn-4.1.0.cjs test
 - Live database, API and deployment have not been verified in this iteration.
 
 See [the evidence-first roadmap](docs/EVIDENCE_FIRST_ROADMAP.md) for the data contract and next steps.
+
+## Disconnected preview
+
+Build with `VITE_DEMO_MODE=true` to use two explicitly fictional profiles and hash-based navigation on static hosting. All API helpers short-circuit locally; sync attempts throw instead of contacting a service. No real records, accounts or personal data are connected. Normal builds remain API-backed.
+
+```sh
+VITE_DEMO_MODE=true node .yarn/releases/yarn-4.1.0.cjs workspace @polity/frontend build
+```

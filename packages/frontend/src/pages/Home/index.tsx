@@ -1,3 +1,4 @@
+import { DEMO_MODE } from "../../data/mode";
 import { Link } from "react-router-dom";
 import {
   Alert,
@@ -58,9 +59,9 @@ export default function Home() {
         </Box>
       </Box>
       <Alert color="neutral">
-        Early prototype, not a finished voter guide. The directory is connected
-        to the existing API; voting provenance and assessments are still being
-        built. No politician is assigned an invented score.
+        {DEMO_MODE
+          ? "This is a disconnected design preview with fictional profiles. Explore the layout and political framework; no real records or ratings are shown."
+          : "Early prototype, not a finished voter guide. The directory is connected to the existing API; voting provenance and assessments are still being built. No politician is assigned an invented score."}
       </Alert>
       <Grid container spacing={2}>
         {pillars.map(([title, description]) => (

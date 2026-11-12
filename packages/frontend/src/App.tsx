@@ -1,19 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Box } from '@mui/joy';
+import { BrowserRouter, HashRouter, Routes, Route } from "react-router-dom";
+import { Box } from "@mui/joy";
 
-import Layout from './components/Layout';
-import Home from './pages/Home';
-import PoliticianDetail from './pages/PoliticianDetail';
-import PoliticianList from './pages/PoliticianList';
-import PoliticalSpectrum from './pages/PoliticalSpectrum';
+import { DEMO_MODE } from "./data/mode";
+
+const Router = DEMO_MODE ? HashRouter : BrowserRouter;
+
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import PoliticianDetail from "./pages/PoliticianDetail";
+import PoliticianList from "./pages/PoliticianList";
+import PoliticalSpectrum from "./pages/PoliticalSpectrum";
 
 function App() {
   return (
     <Router>
       <Box
         sx={{
-          minHeight: '100vh',
-          bgcolor: 'background.body',
+          minHeight: "100vh",
+          bgcolor: "background.body",
         }}
       >
         <Layout>
@@ -29,4 +33,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

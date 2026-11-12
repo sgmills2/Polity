@@ -1,3 +1,4 @@
+import { DEMO_MODE } from "../../data/mode";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -114,8 +115,9 @@ export default function PoliticianDetail() {
           </Box>
         </Box>
         <Typography level="body-sm">
-          Directory information is imported and may be outdated. Current office
-          and contact details still require source verification.
+          {DEMO_MODE
+            ? "This is a fictional preview identity, not a real elected official."
+            : "Directory information is imported and may be outdated. Current office and contact details still require source verification."}
         </Typography>
       </Card>
       <Grid container spacing={2}>
