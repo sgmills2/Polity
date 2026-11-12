@@ -9,7 +9,7 @@ test("preview identities are unmistakably fictional and contain no personal data
   assert.equal(DEMO_POLITICIANS.length, 2);
   for (const person of DEMO_POLITICIANS) {
     assert.match(person.id, /^demo-/);
-    assert.match(person.name, /fictional/);
+    assert.match(person.description, /Invented preview profile/);
     assert.equal(person.photoUrl, "");
     assert.equal(person.servingSince, "");
     assert.equal(person.overallScore, undefined);

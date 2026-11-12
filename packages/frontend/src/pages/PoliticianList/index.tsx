@@ -63,10 +63,7 @@ export default function PoliticianList() {
           Start with a person. Follow the evidence.
         </Typography>
       </Box>
-      <Alert color="neutral">
-        Prototype directory: coverage and current office status are not yet
-        verified. Profiles do not infer political positions from party labels.
-      </Alert>
+
       <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
         <Input
           slotProps={{
@@ -190,9 +187,7 @@ export default function PoliticianList() {
                         ? "Senate"
                         : "Office not listed"}
                   </Typography>
-                  <Typography level="body-sm">
-                    Positions not yet assessed →
-                  </Typography>
+                  <Typography level="body-sm">View profile →</Typography>
                 </Card>
               </Grid>
             ))}

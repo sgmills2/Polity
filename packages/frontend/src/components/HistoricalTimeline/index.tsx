@@ -56,29 +56,16 @@ export default function HistoricalTimeline({
           </Typography>
         </Box>
         <Chip color="primary" variant="soft">
-          {events.length
-            ? "Illustrative timeline · invented events"
-            : "Historical evidence not connected"}
+          {events.length ? "Illustrative history" : "Timeline"}
         </Chip>
       </Box>
       <Typography>
-        Compare what someone said with what they voted for, issue by issue. A
-        later position can reflect a change, a compromise or a different
-        question. Let the record explain the difference.
+        Follow the choices. Compare the words. Read the context.
       </Typography>
       {!events.length ? (
-        <Alert color="neutral">
-          No reviewed historical series is available for this profile. Missing
-          years are not evidence of consistency, a reversal or a centrist
-          position.
-        </Alert>
+        <Alert color="neutral">No historical entries available yet.</Alert>
       ) : (
         <>
-          <Alert color="warning">
-            Every event below is invented for Alex Example’s design demo. These
-            are not real votes, quotations, bills or assessments. No sources are
-            implied.
-          </Alert>
           <Box
             role="group"
             aria-label="Timeline dimension"
@@ -157,8 +144,8 @@ export default function HistoricalTimeline({
                     sx={{ fontSize: "0.75rem", fontWeight: 400 }}
                   >
                     {count
-                      ? `${count} illustrative ${count === 1 ? "event" : "events"}`
-                      : "No example evidence"}
+                      ? `${count} ${count === 1 ? "event" : "events"}`
+                      : "No entries"}
                   </Box>
                 </Button>
               );
@@ -174,8 +161,7 @@ export default function HistoricalTimeline({
             }}
           >
             <Typography role="status" level="body-sm">
-              {visible.length} illustrative{" "}
-              {visible.length === 1 ? "event" : "events"} ·{" "}
+              {visible.length} {visible.length === 1 ? "event" : "events"} ·{" "}
               {year ?? "all years"} · oldest first
             </Typography>
             {year !== null && (
@@ -184,11 +170,55 @@ export default function HistoricalTimeline({
               </Button>
             )}
           </Box>
+          {visible.length > 1 && (
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "1fr",
+                  sm: "repeat(2,minmax(0,1fr))",
+                },
+                gap: 1.5,
+                my: 1,
+              }}
+            >
+              {[
+                { label: "First in view", event: visible[0] },
+                { label: "Latest in view", event: visible[visible.length - 1] },
+              ].map(({ label, event }) => (
+                <Box
+                  key={label}
+                  sx={{ bgcolor: "primary.softBg", borderRadius: "md", p: 2 }}
+                >
+                  <Typography
+                    level="body-xs"
+                    sx={{
+                      fontWeight: 700,
+                      color: "primary.softColor",
+                      textTransform: "uppercase",
+                      letterSpacing: ".06em",
+                    }}
+                  >
+                    {label} · {event.date.slice(0, 4)}
+                  </Typography>
+                  <Typography
+                    level="title-md"
+                    sx={{ color: "primary.softColor", mt: 0.5 }}
+                  >
+                    {event.position}
+                  </Typography>
+                  <Typography
+                    level="body-xs"
+                    sx={{ color: "primary.softColor", mt: 0.5 }}
+                  >
+                    {event.kind === "vote" ? "Vote" : "Statement"}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          )}
           {!visible.length ? (
-            <Alert color="neutral">
-              No illustrative events match these filters. We do not draw a trend
-              through this gap.
-            </Alert>
+            <Alert color="neutral">No entries match these filters.</Alert>
           ) : (
             <Stack
               component="ol"
@@ -228,9 +258,7 @@ export default function HistoricalTimeline({
                       color="primary"
                       variant={event.kind === "vote" ? "solid" : "outlined"}
                     >
-                      {event.kind === "vote"
-                        ? "◇ Illustrative vote"
-                        : "○ Illustrative statement"}
+                      {event.kind === "vote" ? "◇ Vote" : "○ Statement"}
                     </Chip>
                   </Box>
                   <Typography level="h3" sx={{ fontSize: "1.1rem" }}>
@@ -255,45 +283,31 @@ export default function HistoricalTimeline({
                         py: 0.5,
                       }}
                     >
-                      Read context and evidence status
+                      Read context
                     </Box>
                     <Typography level="body-sm" sx={{ mt: 1 }}>
                       {event.context}
-                    </Typography>
-                    <Typography level="body-xs" sx={{ mt: 1 }}>
-                      Evidence status: synthetic design fixture. No primary
-                      source exists for this event; it is excluded from all
-                      real-person assessments.
                     </Typography>
                   </Box>
                 </Box>
               ))}
             </Stack>
           )}
-          <Typography level="body-sm" sx={{ mt: 2 }}>
-            Read the dates, not just the direction. Different bills and
-            statements are not interchangeable observations. No numeric ideology
-            trend is calculated from this sample.
-          </Typography>
         </>
       )}
-      <Box
-        sx={{
-          bgcolor: "primary.softBg",
-          color: "primary.softColor",
-          borderRadius: "md",
-          p: 2,
-          mt: 1,
-        }}
-      >
-        <Typography level="title-sm" sx={{ color: "inherit" }}>
-          What a real timeline will need
-        </Typography>
-        <Typography level="body-sm" sx={{ color: "inherit" }}>
-          Event date and publication date, exact vote question or statement
-          context, primary source, document version, issue-specific
-          interpretation, counterevidence and coverage gaps. Votes and
-          statements stay distinguishable; missing periods are never filled in.
+      <Box component="details" sx={{ mt: 1, color: "text.secondary" }}>
+        <Box
+          component="summary"
+          sx={{ cursor: "pointer", fontSize: ".875rem", py: 1 }}
+        >
+          How to read a timeline
+        </Box>
+        <Typography level="body-sm">
+          Votes and statements describe different kinds of evidence. Compare the
+          exact issue, date, bill version and context before calling something a
+          reversal. Missing years stay empty.{" "}
+          {events.length > 0 &&
+            "This illustrative history uses invented events, not real votes or quotations."}
         </Typography>
       </Box>
     </Card>

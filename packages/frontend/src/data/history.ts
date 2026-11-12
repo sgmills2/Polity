@@ -25,7 +25,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Healthcare: a targeted expansion",
     position: "Public coverage for a limited group",
     context:
-      "Invented scenario: the speaker favors expanding an existing program for low-income households, while retaining the private insurance system.",
+      "The speaker favors expanding an existing program for low-income households, while retaining the private insurance system.",
     status: "illustrative",
   },
   {
@@ -36,7 +36,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Healthcare: a public-option proposal",
     position: "Supports an optional public plan",
     context:
-      "Invented scenario: a yes vote on a standalone public-option proposal. Bill text, amendments and vote stage would be necessary to interpret a real vote.",
+      "A yes vote on a standalone public-option proposal. Bill text, amendments and vote stage would be necessary to interpret a real vote.",
     status: "illustrative",
   },
   {
@@ -47,7 +47,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Healthcare: a wider commitment",
     position: "Calls for universal public coverage",
     context:
-      "Invented scenario: the stated aim has broadened. This does not establish what the person would vote for or how the proposal would be funded.",
+      "The stated aim has broadened. This does not establish what the person would vote for or how the proposal would be funded.",
     status: "illustrative",
   },
   {
@@ -58,7 +58,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Healthcare: a narrower enacted step",
     position: "Supports a limited expansion",
     context:
-      "Invented scenario: a vote for a narrower measure after a broader statement. Compromise, available alternatives and legislative context matter; this is not automatically a reversal.",
+      "A vote for a narrower measure after a broader statement. Compromise, available alternatives and legislative context matter; this is not automatically a reversal.",
     status: "illustrative",
   },
   {
@@ -69,7 +69,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Emergency powers",
     position: "Supports temporary executive authority",
     context:
-      "Invented scenario: a time-limited authorization with a sunset clause. Scope and oversight would need to be read in the text.",
+      "A time-limited authorization with a sunset clause. Scope and oversight would need to be read in the text.",
     status: "illustrative",
   },
   {
@@ -80,7 +80,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Oversight of emergency powers",
     position: "Calls for stronger legislative review",
     context:
-      "Invented scenario: a later statement favors additional checks. There are no illustrative events for the intervening years; the gap is not interpolated.",
+      "A later statement favors additional checks. There are no illustrative events for the intervening years; the gap is not interpolated.",
     status: "illustrative",
   },
   {
@@ -91,7 +91,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Access to public services",
     position: "Supports broader accessibility",
     context:
-      "Invented scenario: a commitment to accessible public services. A statement alone does not show implementation or an enforcement record.",
+      "A commitment to accessible public services. A statement alone does not show implementation or an enforcement record.",
     status: "illustrative",
   },
   {
@@ -102,7 +102,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Military assistance",
     position: "Supports an assistance package",
     context:
-      "Invented scenario: a vote for assistance without a rights-reporting condition. No country or real legislation is represented.",
+      "A vote for assistance without a rights-reporting condition. No country or real legislation is represented.",
     status: "illustrative",
   },
   {
@@ -113,7 +113,7 @@ const fixtures: IllustrativeEvent[] = [
     title: "Conditions on military assistance",
     position: "Calls for civilian-protection conditions",
     context:
-      "Invented scenario: a later statement adds conditions. Country, recipient, funding and exceptions must be compared before describing a real shift.",
+      "A later statement adds conditions. Country, recipient, funding and exceptions must be compared before describing a real shift.",
     status: "illustrative",
   },
 ];

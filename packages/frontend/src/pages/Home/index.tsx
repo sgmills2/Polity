@@ -1,43 +1,29 @@
 import { DEMO_MODE } from "../../data/mode";
 import { Link } from "react-router-dom";
-import {
-  Alert,
-  Box,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  Chip,
-  Stack,
-} from "@mui/joy";
+import { Box, Typography, Button, Grid, Card, Chip, Stack } from "@mui/joy";
 
-const pillars = [
-  [
-    "Follow the vote",
-    "What happened, who voted, and the primary record. Missing evidence stays missing.",
-  ],
-  [
-    "Read the fine print",
-    "A future legislation workspace for the text, exceptions, beneficiaries, trade-offs and implementation dates.",
-  ],
-  [
-    "Look beyond party",
-    "Explore economics, political authority, equality and foreign policy without reducing everyone to red or blue.",
-  ],
-];
 export default function Home() {
   return (
-    <Stack spacing={4}>
-      <Box sx={{ py: { xs: 2, md: 5 }, maxWidth: 800 }}>
-        <Chip variant="outlined" sx={{ mb: 2 }}>
-          Independent research prototype
-        </Chip>
+    <Stack spacing={5}>
+      <Box sx={{ py: { xs: 2, md: 5 }, maxWidth: 900 }}>
+        <Typography
+          level="body-sm"
+          sx={{
+            fontWeight: 700,
+            letterSpacing: ".12em",
+            color: "primary.plainColor",
+            mb: 2,
+          }}
+        >
+          PEOPLE. POSITIONS. POWER.
+        </Typography>
         <Typography
           level="h1"
           sx={{
-            fontSize: { xs: "2.7rem", md: "4.4rem" },
-            lineHeight: 1.05,
-            mb: 2,
+            fontSize: { xs: "3rem", md: "5rem" },
+            letterSpacing: "-.045em",
+            lineHeight: 1.02,
+            mb: 3,
             color: "primary.plainColor",
           }}
         >
@@ -45,68 +31,125 @@ export default function Home() {
           <br />
           More public record.
         </Typography>
-        <Typography level="body-lg" sx={{ maxWidth: 650, mb: 3 }}>
-          Understand what elected officials do, not just what they call
-          themselves. A voter guide in the making, built around inspectable
-          evidence and room for disagreement.
+        <Typography level="body-lg" sx={{ maxWidth: 620, mb: 3 }}>
+          Look beyond the party label. Explore political ideas, follow positions
+          over time, and get closer to the decisions that shape everyday life.
         </Typography>
         <Box sx={{ display: "flex", gap: 1.5, flexWrap: "wrap" }}>
           <Button component={Link} to="/politicians" size="lg">
-            Explore politicians
+            Explore people →
           </Button>
           <Button component={Link} to="/spectrum" variant="outlined" size="lg">
-            Explore the political framework
+            Explore ideas
           </Button>
-          {DEMO_MODE && (
-            <Button
-              component={Link}
-              to="/politicians/demo-alex"
-              variant="soft"
-              size="lg"
-            >
-              Try a historical timeline
-            </Button>
-          )}
         </Box>
       </Box>
-      <Alert color="neutral">
-        {DEMO_MODE
-          ? "This is a disconnected design preview with fictional profiles. Explore the layout and political framework; no real records or ratings are shown."
-          : "Early prototype, not a finished voter guide. The directory is connected to the existing API; voting provenance and assessments are still being built. No politician is assigned an invented score."}
-      </Alert>
-      <Grid container spacing={2}>
-        {pillars.map(([title, description]) => (
-          <Grid xs={12} md={4} key={title}>
-            <Card sx={{ height: "100%", boxSizing: "border-box" }}>
-              <Typography level="h2" sx={{ fontSize: "1.4rem" }}>
-                {title}
+      {DEMO_MODE && (
+        <Card
+          variant="soft"
+          color="primary"
+          sx={{ p: { xs: 2.5, md: 4 }, overflow: "hidden" }}
+        >
+          <Grid container spacing={3} sx={{ alignItems: "center" }}>
+            <Grid xs={12} md={6}>
+              <Typography level="body-sm" sx={{ fontWeight: 700, mb: 1 }}>
+                THE LONG VIEW
               </Typography>
-              <Typography>{description}</Typography>
+              <Typography
+                level="h2"
+                sx={{ fontSize: { xs: "1.8rem", md: "2.4rem" }, mb: 2 }}
+              >
+                A position is a story.
+                <br />
+                Not a single score.
+              </Typography>
+              <Typography sx={{ maxWidth: 450, mb: 2 }}>
+                Put statements next to votes. Trace what changes, what stays
+                consistent, and where the record leaves questions.
+              </Typography>
+              <Button
+                component={Link}
+                to="/politicians/demo-alex"
+                color="primary"
+              >
+                Explore Alex’s timeline →
+              </Button>
+            </Grid>
+            <Grid xs={12} md={6}>
+              <Box
+                sx={{
+                  borderLeft: "2px solid",
+                  borderColor: "primary.300",
+                  pl: 2.5,
+                  display: "grid",
+                  gap: 2,
+                }}
+              >
+                {[
+                  ["2020", "A starting position"],
+                  ["2022", "A legislative decision"],
+                  ["2024", "A wider commitment"],
+                  ["2026", "A different compromise"],
+                ].map(([year, title]) => (
+                  <Box
+                    key={year}
+                    sx={{ display: "flex", gap: 2, alignItems: "center" }}
+                  >
+                    <Chip color="primary" variant="outlined" size="sm">
+                      {year}
+                    </Chip>
+                    <Typography level="title-md">{title}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Grid>
+          </Grid>
+        </Card>
+      )}
+      <Grid container spacing={2}>
+        {[
+          {
+            number: "01",
+            title: "Know the people",
+            body: "Browse profiles by state, chamber and party.",
+            to: "/politicians",
+          },
+          {
+            number: "02",
+            title: "Think in dimensions",
+            body: "Economics, authority, rights and foreign policy. One axis is never enough.",
+            to: "/spectrum",
+          },
+        ].map((item) => (
+          <Grid key={item.number} xs={12} sm={6}>
+            <Card
+              component={Link}
+              to={item.to}
+              sx={{
+                p: 3,
+                height: "100%",
+                boxSizing: "border-box",
+                textDecoration: "none",
+                "&:hover": {
+                  borderColor: "primary.500",
+                  bgcolor: "primary.softBg",
+                },
+              }}
+            >
+              <Typography
+                level="body-sm"
+                sx={{ color: "primary.plainColor", fontWeight: 700 }}
+              >
+                {item.number}
+              </Typography>
+              <Typography level="h2" sx={{ fontSize: "1.4rem" }}>
+                {item.title} ↗
+              </Typography>
+              <Typography>{item.body}</Typography>
             </Card>
           </Grid>
         ))}
       </Grid>
-      <Card variant="soft" sx={{ p: { xs: 2, md: 4 } }}>
-        <Chip size="sm" variant="outlined">
-          On the roadmap
-        </Chip>
-        <Typography level="h2">From your neighborhood to Washington</Typography>
-        <Typography>
-          Find your officials, read their records and contact their offices.
-          Local coverage and address lookup are not connected yet. This
-          prototype does not collect your address or create a voter profile.
-        </Typography>
-        <Typography level="body-sm">
-          Planned: sourced speech highlights, contextual idea-frequency views,
-          public legal records with dispositions, and contact drafts you review
-          before sending.
-        </Typography>
-      </Card>
-      <Typography level="body-sm">
-        Our standard: apply the same evidence rules across parties. Separate
-        documented facts, disputed claims and editorial analysis. Make methods,
-        dates, sources and corrections visible.
-      </Typography>
     </Stack>
   );
 }

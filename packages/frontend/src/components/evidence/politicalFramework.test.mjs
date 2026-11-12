@@ -36,5 +36,5 @@ test("spectrum cannot fabricate random politician scores or request legacy score
     /Math\.random|generateMock|getPoliticianScores|generatePoliticianScore/,
   );
   assert.match(source, /aria-pressed/);
-  assert.match(source, /No politician rankings published yet/);
+  assert.match(source, /A guide to ideas, not politician ratings/);
 });

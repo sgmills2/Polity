@@ -4,7 +4,7 @@ import type { Politician } from "@polity/shared";
 export const DEMO_POLITICIANS: Politician[] = [
   {
     id: "demo-alex",
-    name: "Alex Example (fictional)",
+    name: "Alex Example",
     party: "Independent",
     state: "IL",
     chamber: "house",
@@ -15,7 +15,7 @@ export const DEMO_POLITICIANS: Politician[] = [
   },
   {
     id: "demo-jordan",
-    name: "Jordan Sample (fictional)",
+    name: "Jordan Sample",
     party: "Democratic",
     state: "WI",
     chamber: "senate",
