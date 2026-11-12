@@ -29,6 +29,11 @@ export default function Layout({ children }: { children: ReactNode }) {
     >
       <Link
         href="#main"
+        onClick={(event) => {
+          event.preventDefault();
+          document.getElementById("main")?.focus();
+          document.getElementById("main")?.scrollIntoView();
+        }}
         sx={{
           position: "absolute",
           left: "-10000px",
@@ -49,6 +54,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         sx={{
           width: { xs: "auto", md: 220 },
           flexShrink: 0,
+          bgcolor: "primary.softBg",
           p: 2,
           borderRight: { md: "1px solid" },
           borderBottom: { xs: "1px solid", md: 0 },
@@ -59,7 +65,11 @@ export default function Layout({ children }: { children: ReactNode }) {
           level="h4"
           component={RouterLink}
           to="/"
-          sx={{ textDecoration: "none", color: "inherit", display: "block" }}
+          sx={{
+            textDecoration: "none",
+            color: "primary.plainColor",
+            display: "block",
+          }}
         >
           Polity
         </Typography>
@@ -80,6 +90,14 @@ export default function Layout({ children }: { children: ReactNode }) {
                 component={RouterLink}
                 to={item.path}
                 selected={location.pathname === item.path}
+                sx={{
+                  borderRadius: "md",
+                  "&.Mui-selected": {
+                    bgcolor: "primary.solidBg",
+                    color: "primary.solidColor",
+                    "&:hover": { bgcolor: "primary.solidHoverBg" },
+                  },
+                }}
                 aria-current={
                   location.pathname === item.path ? "page" : undefined
                 }

@@ -38,6 +38,7 @@ export default function Home() {
             fontSize: { xs: "2.7rem", md: "4.4rem" },
             lineHeight: 1.05,
             mb: 2,
+            color: "primary.plainColor",
           }}
         >
           Less team sport.
@@ -56,6 +57,16 @@ export default function Home() {
           <Button component={Link} to="/spectrum" variant="outlined" size="lg">
             Explore the political framework
           </Button>
+          {DEMO_MODE && (
+            <Button
+              component={Link}
+              to="/politicians/demo-alex"
+              variant="soft"
+              size="lg"
+            >
+              Try a historical timeline
+            </Button>
+          )}
         </Box>
       </Box>
       <Alert color="neutral">

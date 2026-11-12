@@ -62,3 +62,20 @@ Sources:
 4. Develop explicit, reviewable assessment methodology with issue dimensions and time windows.
 5. Add rhetoric/legal sources only when acquisition, identity matching and update/correction paths are sound.
 6. Add local office lookup and opt-in account/contact workflows after privacy design.
+
+## Historical timeline prototype and source audit · 2026-11-12
+
+Purple is now the application accent in both color schemes, not a party/ideology encoding. The fictional Alex Example preview has a dated, filterable timeline with separate vote and statement labels, four dimensions, disclosure details and visible evidence gaps. All events are invented. No numeric ideology trend is computed; no synthetic events appear on real API profiles. Other profiles show an honest empty state. A narrower vote after a broader statement is explicitly not automatically treated as a reversal.
+
+### Existing voting connection, inspected rather than assumed
+
+- Hosted preview: all seven API helpers are disconnected by `DEMO_MODE`. No live Congress, Clerk or Supabase requests.
+- Normal frontend: `GET /api/politicians/:id/voting-history` → `realDataApi.ts` → Supabase `voting_records` joined to bills/topics. Returned records lack `source_url`, `verification_status`, `reviewed_at` and are intentionally withheld by the publication gate. The backend may turn DB errors into empty arrays, which must be corrected before claiming complete coverage.
+- `votingRecords.ts`: counts bill vote-related actions; individual-vote extraction remains TODO.
+- `realVotingDataSync.ts`: assumes `/v3/vote/{congress}/{chamber}` and response shapes not matching the documented House API.
+- `houseClerkIntegration.ts`: exploratory, not routed into sync. `https://clerk.house.gov/evs/2024/index.xml` returned 404; `https://clerk.house.gov/evs/2024/roll001.xml` returned 200. The actual XML uses hyphenated/nested `rollcall-vote`, `vote-metadata`, `vote-data`, `recorded-vote` and `name-id`; the current parser expects different fields. It also confuses member IDs and names and defaults unknown votes to Not Voting.
+- Separate Supabase function assumes `/v3/congress/118/{SENATE|HOUSE}/votes`; deployment/runtime is not verified.
+- Services largely default to Congress 118; Clerk year-to-Congress mapping is wrong for later years. No sync was run during this review.
+- No statement, tweet or speech ingestion exists.
+
+Next: one tested official House path using stable Bioguide identity, Congress/session/roll-call IDs, exact question, bill version and primary-source provenance. Statements need a separate dated pipeline, not inference from votes. Show observation dates, publication dates and gaps; do not interpolate beliefs through missing years.

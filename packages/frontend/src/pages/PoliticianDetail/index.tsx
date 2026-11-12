@@ -1,3 +1,4 @@
+import HistoricalTimeline from "../../components/HistoricalTimeline";
 import { DEMO_MODE } from "../../data/mode";
 import { Link as RouterLink, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -190,6 +191,7 @@ export default function PoliticianDetail() {
           </Card>
         </Grid>
       </Grid>
+      <HistoricalTimeline key={id} politicianId={id} />
       <Typography level="h2" sx={{ fontSize: "1.5rem" }}>
         The next layer of accountability
       </Typography>
@@ -213,8 +215,9 @@ export default function PoliticianDetail() {
         ))}
       </Grid>
       <Typography level="body-sm">
-        No allegation, quotation or legal history has been collected for this
-        page. Lack of an entry does not mean a complete search found nothing.
+        No real allegation, quotation or legal history has been collected for
+        this page. Lack of an entry does not mean a complete search found
+        nothing.
       </Typography>
     </Stack>
   );
