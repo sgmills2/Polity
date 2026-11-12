@@ -79,3 +79,7 @@ Purple is now the application accent in both color schemes, not a party/ideology
 - No statement, tweet or speech ingestion exists.
 
 Next: one tested official House path using stable Bioguide identity, Congress/session/roll-call IDs, exact question, bill version and primary-source provenance. Statements need a separate dated pipeline, not inference from votes. Show observation dates, publication dates and gaps; do not interpolate beliefs through missing years.
+
+### Longer-term civic participation (not implemented)
+
+Sean also wants current feeds, optional accounts, user votes on proposed bills and eventual reporting of constituent polling to elected officials. Treat this as a separate future phase, not authorization to contact offices or collect political preferences now. Design for minimal address/political-preference retention, explicit consent, private-by-default responses, abuse controls, small-group suppression and clear withdrawal/deletion choices. Distinguish verified district membership from a public identity; never expose individual preferences or addresses in legislator reports. Show the question, bill version, time window, sample size, missing coverage and self-selection: voluntary site responses are not a representative poll or election result. Aggregate reports and any outreach need specific authorization and an understandable review step.
