@@ -25,17 +25,10 @@ export function record(v: unknown): Record<string, unknown> {
   return v as Record<string, unknown>;
 }
 export function parseVote(value: unknown): HouseVote {
-  const v = record(value);
+  const v = { ...record(value) };
   for (const k of ["congress", "sessionNumber", "rollCallNumber"])
     if (!Number.isInteger(v[k])) throw Error("Invalid vote identity.");
-  for (const k of [
-    "legislationType",
-    "legislationNumber",
-    "startDate",
-    "updateDate",
-    "result",
-    "sourceDataURL",
-  ])
+  for (const k of ["startDate", "updateDate", "result", "sourceDataURL"])
     if (typeof v[k] !== "string") throw Error("Incomplete vote record.");
   const u = new URL(v.sourceDataURL as string);
   if (
@@ -50,6 +43,19 @@ export function parseVote(value: unknown): HouseVote {
     !Number.isFinite(Date.parse(v.updateDate as string))
   )
     throw Error("Invalid vote date.");
+  // Amendments and non-legislation motions legitimately omit bill fields.
+  v.legislationType =
+    typeof v.legislationType === "string"
+      ? v.legislationType
+      : typeof v.amendmentType === "string"
+        ? v.amendmentType
+        : "Roll call";
+  v.legislationNumber =
+    typeof v.legislationNumber === "string"
+      ? v.legislationNumber
+      : typeof v.amendmentNumber === "string"
+        ? v.amendmentNumber
+        : String(v.rollCallNumber);
   return v as HouseVote;
 }
 export function parseMembers(value: unknown): MemberVote[] {
@@ -103,7 +109,7 @@ async function request(path: string, offset = 0): Promise<unknown> {
   url.search = new URLSearchParams({
     api_key: "DEMO_KEY",
     format: "json",
-    limit: "20",
+    limit: "250",
     offset: String(offset),
   }).toString();
   let res: Response;
@@ -126,17 +132,47 @@ async function request(path: string, offset = 0): Promise<unknown> {
     throw Error("Congress.gov returned unreadable data.");
   }
 }
-export async function loadVotes(c: number, s: number, offset: number) {
-  const data = record(await request(votePath(c, s), offset));
-  if (!Array.isArray(data.houseRollCallVotes))
-    throw Error("Vote list unavailable.");
-  const count = record(data.pagination).count;
-  if (!Number.isInteger(count) || Number(count) < 0)
-    throw Error("Invalid count.");
-  const votes = data.houseRollCallVotes.map(parseVote);
-  if (votes.some((v) => v.congress !== c || v.sessionNumber !== s))
-    throw Error("Session mismatch.");
-  return { votes, count: Number(count), fetchedAt: new Date().toISOString() };
+export async function loadVotes(c: number, s: number) {
+  const votes: HouseVote[] = [];
+  const ids = new Set<number>();
+  let expected: number | undefined;
+  // Full-session sorting avoids presenting arbitrary API order as recent votes.
+  // Eight pages bound trial cost; failure never silently produces a partial list.
+  for (let page = 0; page < 8; page++) {
+    const data = record(await request(votePath(c, s), page * 250));
+    if (!Array.isArray(data.houseRollCallVotes))
+      throw Error("Vote list unavailable.");
+    const count = record(data.pagination).count;
+    if (!Number.isInteger(count) || Number(count) < 0 || Number(count) > 2000)
+      throw Error(
+        "Session exceeds trial coverage limits. Open Congress.gov for the complete record.",
+      );
+    if (expected !== undefined && expected !== count)
+      throw Error(
+        "Congress.gov changed during loading. Please try again later.",
+      );
+    expected = Number(count);
+    const rows = data.houseRollCallVotes.map(parseVote);
+    for (const v of rows) {
+      if (v.congress !== c || v.sessionNumber !== s)
+        throw Error("Session mismatch.");
+      if (ids.has(v.rollCallNumber))
+        throw Error("Overlapping source pages. Please try again later.");
+      ids.add(v.rollCallNumber);
+      votes.push(v);
+    }
+    if (votes.length === expected) {
+      votes.sort(
+        (a, b) =>
+          Date.parse(b.startDate) - Date.parse(a.startDate) ||
+          b.rollCallNumber - a.rollCallNumber,
+      );
+      return { votes, count: expected, fetchedAt: new Date().toISOString() };
+    }
+    if (votes.length > expected || rows.length !== 250)
+      throw Error("Incomplete source response. No partial session is shown.");
+  }
+  throw Error("Session exceeds trial coverage limits.");
 }
 export async function loadMembers(v: HouseVote) {
   const data = record(

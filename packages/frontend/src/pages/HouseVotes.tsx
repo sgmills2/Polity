@@ -31,8 +31,8 @@ export default function HouseVotes() {
     refetchOnWindowFocus: false,
   };
   const list = useQuery({
-    queryKey: ["house-votes", period, offset],
-    queryFn: () => loadVotes(c, s, offset),
+    queryKey: ["house-votes", period],
+    queryFn: () => loadVotes(c, s),
     ...options,
   });
   const detail = useQuery({
@@ -64,9 +64,9 @@ export default function HouseVotes() {
       </Typography>
       <Alert sx={{ mb: 3 }}>
         Public API trial: strict shared request limits apply. Not yet a
-        continuous production feed. Coverage: legislation-associated House votes
-        in the 118th and 119th Congresses only, not Senate votes or a complete
-        historical record.
+        continuous production feed. Coverage: House votes supplied for the 118th
+        and 119th Congresses only, not Senate votes or a complete historical
+        record. Some non-legislation votes may be absent.
       </Alert>
       <Select
         aria-label="Congress and session"
@@ -101,8 +101,10 @@ export default function HouseVotes() {
         <>
           <Typography level="body-sm" sx={{ mb: 2 }}>
             Retrieved {date(list.data.fetchedAt)} · {list.data.count} records
-            reported. Order is supplied by Congress.gov; this does not establish
-            complete or current coverage.
+            reported. Sorted newest vote first after loading the complete API
+            session. Newest returned vote:{" "}
+            {list.data.votes[0] ? date(list.data.votes[0].startDate) : "none"}.
+            API coverage may lag the House Clerk.
           </Typography>
           <Box
             sx={{
@@ -115,7 +117,7 @@ export default function HouseVotes() {
             }}
           >
             <Box>
-              {list.data.votes.map((v) => (
+              {list.data.votes.slice(offset, offset + 20).map((v) => (
                 <Card key={v.rollCallNumber} sx={{ mb: 1 }}>
                   <Typography level="title-lg">
                     {v.legislationType} {v.legislationNumber}
