@@ -49,14 +49,22 @@ async function fetchFromCongressApi(endpoint: string, params: Record<string, any
     url.searchParams.append(key, value.toString());
   });
 
-  console.log(`Fetching: ${url.pathname}?${url.searchParams.toString().substring(0, 100)}...`);
-  
-  const response = await fetch(url.toString());
+  // Query parameters contain the API key. Never log the URL or raw fetch errors.
+  let response: Response;
+  try {
+    response = await fetch(url.toString());
+  } catch {
+    throw new Error('Congress API request failed');
+  }
   if (!response.ok) {
-    throw new Error(`Congress API error: ${response.status} ${response.statusText}`);
+    throw new Error(`Congress API error: ${response.status}`);
   }
 
-  return response.json();
+  try {
+    return await response.json();
+  } catch {
+    throw new Error('Congress API returned invalid JSON');
+  }
 }
 
 async function classifyBillByTopic(bill: CongressBill): Promise<string[]> {
