@@ -13,6 +13,7 @@ import {
 
 const navItems = [
   { path: "/", label: "Home" },
+  { path: "/votes", label: "House votes" },
   { path: "/politicians", label: "Politicians" },
   { path: "/spectrum", label: "Political framework" },
 ];
@@ -132,7 +133,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Typography>
           {DEMO_MODE && (
             <Typography level="body-xs">
-              Illustrative profiles & events
+              Illustrative profiles · Official records in House votes
             </Typography>
           )}
         </Box>
