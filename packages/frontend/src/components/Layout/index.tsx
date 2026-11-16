@@ -133,7 +133,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           </Typography>
           {DEMO_MODE && (
             <Typography level="body-xs">
-              Illustrative profiles · Official records in House votes
+              Voteview congressional records · Official House votes
             </Typography>
           )}
         </Box>

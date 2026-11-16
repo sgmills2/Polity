@@ -11,7 +11,7 @@ test("presentation removes warning clutter while retaining discreet data distinc
     source("components/Layout/index.tsx"),
     /DEMO ONLY|No live API/,
   );
-  assert.match(source("components/Layout/index.tsx"), /Illustrative profiles/);
+  assert.match(source("components/Layout/index.tsx"), /Voteview congressional records/);
   assert.match(
     source("pages/PoliticianDetail/index.tsx"),
     /Illustrative profile/,

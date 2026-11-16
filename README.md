@@ -46,7 +46,7 @@ See [the evidence-first roadmap](docs/EVIDENCE_FIRST_ROADMAP.md) for the data co
 
 ## Disconnected preview
 
-Build with `VITE_DEMO_MODE=true` to use two explicitly fictional profiles and hash-based navigation on static hosting. All API helpers short-circuit locally; sync attempts throw instead of contacting a service. No real records, accounts or personal data are connected. Normal builds remain API-backed.
+Build with `VITE_DEMO_MODE=true` for hash-based static hosting with dated, sourced Voteview congressional records and score/trend visualizations. Profile API helpers short-circuit locally; sync attempts throw instead of contacting a backend. House roll calls separately read the official public-trial Congress.gov feed. No private credentials, accounts, or database are connected. Normal builds remain API-backed. See docs/RESEARCH-PROFILES.md for coverage, methodology and refresh instructions.
 
 ```sh
 VITE_DEMO_MODE=true node .yarn/releases/yarn-4.1.0.cjs workspace @polity/frontend build

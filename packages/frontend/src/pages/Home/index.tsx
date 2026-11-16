@@ -64,15 +64,15 @@ export default function Home() {
                 Not a single score.
               </Typography>
               <Typography sx={{ maxWidth: 450, mb: 2 }}>
-                Put statements next to votes. Trace what changes, what stays
-                consistent, and where the record leaves questions.
+                Browse 119th Congress records, compare voting alignment, and
+                trace per-Congress estimates alongside the underlying sources.
               </Typography>
               <Button
                 component={Link}
-                to="/politicians/demo-alex"
+                to="/politicians/S000033-29147"
                 color="primary"
               >
-                Explore Alex’s timeline →
+                Explore Sanders’s record →
               </Button>
             </Grid>
             <Grid xs={12} md={6}>
@@ -86,10 +86,10 @@ export default function Home() {
                 }}
               >
                 {[
-                  ["2020", "A starting position"],
-                  ["2022", "A legislative decision"],
-                  ["2024", "A wider commitment"],
-                  ["2026", "A different compromise"],
+                  ["01", "Find a representative"],
+                  ["02", "See voting alignment"],
+                  ["03", "Explore the historical record"],
+                  ["04", "Read the source evidence"],
                 ].map(([year, title]) => (
                   <Box
                     key={year}

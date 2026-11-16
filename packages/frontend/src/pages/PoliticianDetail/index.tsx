@@ -1,3 +1,5 @@
+import ResearchProfile from "../../components/ResearchProfile";
+import { researchPerson } from "../../data/research";
 import HistoricalTimeline from "../../components/HistoricalTimeline";
 import { DEMO_MODE } from "../../data/mode";
 import { Link as RouterLink, useParams } from "react-router-dom";
@@ -53,6 +55,8 @@ export default function PoliticianDetail() {
         This profile could not be loaded.
       </Alert>
     );
+  if (researchPerson(id))
+    return <ResearchProfile person={researchPerson(id)!} />;
   if (!politician) return <Alert>Profile not found.</Alert>;
   return (
     <Stack spacing={3}>
